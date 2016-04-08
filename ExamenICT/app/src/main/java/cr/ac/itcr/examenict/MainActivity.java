@@ -1,8 +1,10 @@
 package cr.ac.itcr.examenict;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,7 +16,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        AboutFragment.OnFragmentInteractionListener,
+        UserRegister.OnFragmentInteractionListener,
+        AnimalGallery.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,19 +88,28 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-
+            Fragment fragment = new AnimalGallery();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_dashboard, fragment).commit();
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
+            Fragment fragment = new UserRegister();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_dashboard, fragment).commit();
 
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-
+            Fragment fragment = new AboutFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_dashboard, fragment).commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

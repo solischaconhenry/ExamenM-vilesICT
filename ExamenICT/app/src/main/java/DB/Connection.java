@@ -33,6 +33,20 @@ public class Connection extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        try{
+            StringBuilder sql = new StringBuilder();
+            for (int indiceVersion = oldVersion; indiceVersion < newVersion; indiceVersion++){
+                int nextVersion = indiceVersion + 1;
+                switch (nextVersion){
+                    case 1:
+                        String sqlDropPlace = "DROP TABLE IF EXISTS userss";
+                        sql.append(sqlDropPlace);
+                        break;
+                }
+                db.execSQL(sql.toString());
+            }
+        }catch(Exception error){
+            Log.d("error", error.getMessage());
+        }
     }
 }

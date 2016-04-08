@@ -1,0 +1,71 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="cr.ac.itcr.examenict.UserRegister">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email:"
+                android:id="@+id/lblEmail"
+                android:textSize="25sp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="50dp"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtEmailUser"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="50dp"
+                android:layout_weight="1"/>
+
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password:"
+                android:textSize="25sp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="50dp" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtPasswordUser"
+                android:inputType="textPassword"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="50dp"
+                android:layout_weight="1" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginTop="20dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Register"
+                android:id="@+id/btnLogin"/>
+        </TableRow>
+
+    </TableLayout>
+</FrameLayout>
