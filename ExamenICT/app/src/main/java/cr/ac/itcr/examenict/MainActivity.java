@@ -19,7 +19,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         AboutFragment.OnFragmentInteractionListener,
         UserRegister.OnFragmentInteractionListener,
-        AnimalGallery.OnFragmentInteractionListener{
+        AnimalGallery.OnFragmentInteractionListener,
+        AnimalRegister.OnFragmentInteractionListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +87,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            Fragment fragment = new AnimalRegister();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_dashboard, fragment).commit();
         } else if (id == R.id.nav_gallery) {
             Fragment fragment = new AnimalGallery();
             getSupportFragmentManager().beginTransaction().replace(R.id.content_dashboard, fragment).commit();

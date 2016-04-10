@@ -2,10 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cr.ac.itcr.examenict.UserRegister">
+    tools:context="cr.ac.itcr.examenict.AnimalRegister">
 
     <!-- TODO: Update blank fragment layout -->
-
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,8 +17,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Email:"
-                android:id="@+id/lblEmail"
+                android:text="Animal Name"
+                android:id="@+id/lblNameAnimal"
                 android:textSize="25sp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="50dp"/>
@@ -27,12 +26,33 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtEmailUser"
-                android:inputType="textEmailAddress"
+                android:id="@+id/txtAnimalName"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="50dp"
                 android:layout_weight="1"/>
 
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Weight(kg):"
+                android:textSize="25sp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="50dp" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtAnimalWeight"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="50dp"
+                android:inputType="numberDecimal"
+                android:layout_weight="1" />
         </TableRow>
         <TableRow
             android:layout_width="match_parent"
@@ -41,15 +61,35 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Password:"
+                android:text="Population:"
                 android:textSize="25sp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="50dp" />
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtPasswordUser"
-                android:inputType="textPassword"
+                android:id="@+id/txtpopulation"
+                android:inputType="numberDecimal"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="50dp"
+                android:layout_weight="1" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Category:"
+                android:textSize="25sp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="50dp" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtCategory"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="50dp"
                 android:layout_weight="1" />
@@ -64,9 +104,10 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Register"
-                android:id="@+id/btnLogin"/>
+                android:text="Add to List"
+                android:id="@+id/btnAddAnimal"/>
         </TableRow>
 
     </TableLayout>
+
 </FrameLayout>

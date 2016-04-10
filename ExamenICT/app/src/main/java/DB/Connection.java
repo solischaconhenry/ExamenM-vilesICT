@@ -25,7 +25,14 @@ public class Connection extends SQLiteOpenHelper {
                     "(password INTEGER PRIMARY KEY, user CHAR(100))";
             sql.append(sqlCreatePlace);
 
+            StringBuilder sqla = new StringBuilder();
+
+            String sqlCreateAnimal = "CREATE TABLE IF NOT EXISTS animal" +
+                    "(name char(100) PRIMARY KEY, category CHAR(100), weight INTEGER, population INTEGER, )";
+            sqla.append(sqlCreateAnimal);
+
             db.execSQL(sql.toString());
+            db.execSQL(sqla.toString());
         }catch (Exception error){
             Log.d("error", error.getMessage());
         }
@@ -35,12 +42,16 @@ public class Connection extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         try{
             StringBuilder sql = new StringBuilder();
+            StringBuilder sqla = new StringBuilder();
             for (int indiceVersion = oldVersion; indiceVersion < newVersion; indiceVersion++){
                 int nextVersion = indiceVersion + 1;
                 switch (nextVersion){
                     case 1:
-                        String sqlDropPlace = "DROP TABLE IF EXISTS userss";
+                        String sqlDropPlace = "DROP TABLE IF EXISTS users";
                         sql.append(sqlDropPlace);
+
+                        String sqlDropAnimal = "DROP TABLE IF EXISTS animal";
+                        sqla.append(sqlDropAnimal);
                         break;
                 }
                 db.execSQL(sql.toString());
