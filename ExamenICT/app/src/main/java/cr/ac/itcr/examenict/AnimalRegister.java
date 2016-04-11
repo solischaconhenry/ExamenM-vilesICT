@@ -1,12 +1,22 @@
 package cr.ac.itcr.examenict;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+
+import DB.AnimalRepository;
+import DB.IBD;
+import Entity.Animal;
 
 
 /**
@@ -17,7 +27,7 @@ import android.view.ViewGroup;
  * Use the {@link AnimalRegister#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AnimalRegister extends Fragment {
+public class AnimalRegister extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -63,8 +73,45 @@ public class AnimalRegister extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        final View view = inflater.inflate(R.layout.fragment_animal_register, container, false);
+        final Button addA = (Button)view.findViewById(R.id.btnAddAnimal);
+
+        addA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView txtname = (TextView)view.findViewById(R.id.txtAnimalName);
+                TextView txtweight = (TextView)view.findViewById(R.id.txtAnimalWeight);
+                TextView txtcategory = (TextView)view.findViewById(R.id.txtCategory);
+                TextView txtpopulation = (TextView)view.findViewById(R.id.txtpopulation);
+                if(txtname.getText().toString().equals("")){
+                    Toast.makeText(getContext().getApplicationContext(), "Complete the Spaces", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    IBD repository = new AnimalRepository(getContext().getApplicationContext());
+
+                    Animal animal = new Animal();
+
+                    animal.setName(txtname.getText().toString());
+                    animal.setCategory(txtcategory.getText().toString());
+                    animal.setPopulation(Integer.parseInt(txtpopulation.getText().toString()));
+                    animal.setWeight(Integer.parseInt(txtweight.getText().toString()));
+
+                    repository.Save(animal);
+                    //limpiar campos
+                    txtcategory.setText("");
+                    txtname.setText("");
+                    txtpopulation.setText("");
+                    txtweight.setText("");
+                    Toast.makeText(getContext(),"Registrado",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_animal_register, container, false);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

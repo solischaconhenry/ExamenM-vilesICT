@@ -7,6 +7,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
+import DB.AnimalRepository;
+import DB.IBD;
+import Entity.Animal;
 
 
 /**
@@ -22,6 +32,8 @@ public class AnimalGallery extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    TextView txtAnimal;
+    ListView lv1;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -63,8 +75,25 @@ public class AnimalGallery extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_animal_gallery, container, false);
+
+        txtAnimal = (TextView)view.findViewById(R.id.txtShowAnimal);
+
+        IBD repository = new AnimalRepository(getContext().getApplicationContext());
+
+        ArrayList<String> test = repository.GetAll();
+
+        lv1 = (ListView)view.findViewById(R.id.lv1Gallery);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, test);
+        lv1.setAdapter(adapter);
+        lv1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                txtAnimal.setText(lv1.getItemAtPosition(position).toString());
+            }
+        });
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_animal_gallery, container, false);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

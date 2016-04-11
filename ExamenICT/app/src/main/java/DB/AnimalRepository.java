@@ -1,6 +1,7 @@
 package DB;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -16,20 +17,23 @@ public class AnimalRepository implements IBD<Animal> {
 
     private Connection connection;
 
+    public AnimalRepository(Context context) {
+        connection = new Connection(context);
+    }
+
     @Override
     public boolean Save(Animal animal) {
         try{
             SQLiteDatabase db = connection.getWritableDatabase();
             if(db != null) {
                 ContentValues newData = new ContentValues();
-                newData.put("id", animal.getName());
-                newData.put("name", animal.getPopulation());
+                newData.put("name", animal.getName());
+                newData.put("population", animal.getPopulation());
                 newData.put("category", animal.getCategory());
                 newData.put("weight", animal.getWeight());
 
-                db.insert("ExamenICT", null, newData);
-
-                connection.close();
+                db.insert("animal", null, newData);
+                db.close();
                 return false;
             }
         }catch (Exception error){
@@ -124,7 +128,7 @@ public class AnimalRepository implements IBD<Animal> {
             SQLiteDatabase db = connection.getWritableDatabase();
             if(db != null) {
                 String[] args = new String[]{String.valueOf(animal.getName())};
-                Cursor cursor = db.query("place", new String[]{"population","name","category","weight"},"id=?",args,null,null,"name desc",null);
+                Cursor cursor = db.query("animal", new String[]{"population","name","category","weight"},"id=?",args,null,null,"name desc",null);
                 if (cursor.moveToFirst()){
                     do{
                         int population = cursor.getInt(0);

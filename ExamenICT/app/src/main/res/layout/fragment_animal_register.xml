@@ -51,7 +51,7 @@
                 android:id="@+id/txtAnimalWeight"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="50dp"
-                android:inputType="numberDecimal"
+                android:inputType="number"
                 android:layout_weight="1" />
         </TableRow>
         <TableRow

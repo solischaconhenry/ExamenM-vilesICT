@@ -7,6 +7,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import DB.IBD;
+import DB.UserRepository;
+import Entity.User;
 
 
 /**
@@ -63,8 +70,40 @@ public class UserRegister extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        final View view = inflater.inflate(R.layout.fragment_user_register, container, false);
+        final Button addU = (Button)view.findViewById(R.id.btnAddUser);
+
+        addU.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView txtuser = (TextView)view.findViewById(R.id.txtEmailUser);
+                TextView txtpassword = (TextView)view.findViewById(R.id.txtPasswordUser);
+
+                if(txtuser.getText().toString().equals("") || txtpassword.getText().toString().equals("")){
+                    Toast.makeText(getContext().getApplicationContext(), "Complete the Spaces", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    IBD repository = new UserRepository(getContext().getApplicationContext());
+
+                    User users = new User();
+
+                    users.setEmail(txtuser.getText().toString());
+                    users.setPassword(txtpassword.getText().toString());
+
+                    repository.Save(users);
+                    //limpiar campos
+                    txtuser.setText("");
+                    txtpassword.setText("");
+                    Toast.makeText(getContext(),"Registrado",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_register, container, false);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

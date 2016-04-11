@@ -9,8 +9,8 @@ import android.util.Log;
  * Created by usuario on 7/4/2016.
  */
 public class Connection extends SQLiteOpenHelper {
-    private static final int VERSION_BDD =1;
-    private static final String NAME_BDD = "ExamenICT";
+    private static final int VERSION_BDD =2;
+    private static final String NAME_BDD = "ExamenICT.db";
 
     public Connection(Context context) {
         super(context, NAME_BDD, null, VERSION_BDD);
@@ -19,20 +19,18 @@ public class Connection extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         try{
-            StringBuilder sql = new StringBuilder();
+            final String sqlCreatePlace;
+            final String sqlCreateAnimal;
             //create
-            String sqlCreatePlace = "CREATE TABLE IF NOT EXISTS users" +
-                    "(password INTEGER PRIMARY KEY, user CHAR(100))";
-            sql.append(sqlCreatePlace);
+            sqlCreatePlace = "CREATE TABLE" + "users" +
+                    "(" + "password INTEGER PRIMARY KEY," + " user TEXT);";
 
-            StringBuilder sqla = new StringBuilder();
+            sqlCreateAnimal = "CREATE TABLE" + "animal" +
+                    "(" + "id" + "INTEGER PRIMARY KEY AUTOINCREMENT," + "name TEXT," + "category TEXT," + "weight INTEGER,"
+                        +"population INTEGER);";
 
-            String sqlCreateAnimal = "CREATE TABLE IF NOT EXISTS animal" +
-                    "(name char(100) PRIMARY KEY, category CHAR(100), weight INTEGER, population INTEGER, )";
-            sqla.append(sqlCreateAnimal);
-
-            db.execSQL(sql.toString());
-            db.execSQL(sqla.toString());
+            db.execSQL(sqlCreatePlace);
+            db.execSQL(sqlCreateAnimal);
         }catch (Exception error){
             Log.d("error", error.getMessage());
         }
