@@ -17,14 +17,15 @@
                 android:height="40dp"
                 android:width="380dp"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Large Text"
                 android:id="@+id/txtShowAnimal"
-                android:layout_gravity="center_horizontal|top" />
+                android:layout_gravity="center_horizontal|top"
+                android:singleLine="false"
+                android:textSize="16sp" />
         </TableRow>
         <TableRow>
             <ListView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:id="@+id/lv1Gallery"
                 android:layout_gravity="center" />
         </TableRow>

@@ -9,11 +9,9 @@ import android.util.Log;
  * Created by usuario on 7/4/2016.
  */
 public class Connection extends SQLiteOpenHelper {
-    private static final int VERSION_BDD =2;
-    private static final String NAME_BDD = "ExamenICT.db";
 
-    public Connection(Context context) {
-        super(context, NAME_BDD, null, VERSION_BDD);
+    public Connection(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+        super(context, name, factory, version);
     }
 
     @Override
@@ -21,16 +19,25 @@ public class Connection extends SQLiteOpenHelper {
         try{
             final String sqlCreatePlace;
             final String sqlCreateAnimal;
-            //create
-            sqlCreatePlace = "CREATE TABLE" + "users" +
-                    "(" + "password INTEGER PRIMARY KEY," + " user TEXT);";
+            final String sqlInsertUsers;
+            final String sqlInsertAnimal;
 
-            sqlCreateAnimal = "CREATE TABLE" + "animal" +
-                    "(" + "id" + "INTEGER PRIMARY KEY AUTOINCREMENT," + "name TEXT," + "category TEXT," + "weight INTEGER,"
-                        +"population INTEGER);";
+            //create
+            sqlCreatePlace = "CREATE TABLE " + "users " +
+                    "(" + "_id INTEGER PRIMARY KEY AUTOINCREMENT, password TEXT," + " user TEXT);";
+
+            sqlCreateAnimal = "CREATE TABLE " + "animal " +
+                    "(" + " id" + " INTEGER PRIMARY KEY AUTOINCREMENT," + " name TEXT," + " category TEXT," + " weight INTEGER,"
+                        +" population INTEGER);";
+
+            sqlInsertUsers = "INSERT INTO users (user, password) Values ('hsolicha', '12345');";
+
+            sqlInsertAnimal = "INSERT INTO animal (name, category, weight, population) Values ('Venado', 'Mamífero', 100, 50);";
 
             db.execSQL(sqlCreatePlace);
             db.execSQL(sqlCreateAnimal);
+            db.execSQL(sqlInsertUsers);
+            db.execSQL(sqlInsertAnimal);
         }catch (Exception error){
             Log.d("error", error.getMessage());
         }
@@ -53,6 +60,7 @@ public class Connection extends SQLiteOpenHelper {
                         break;
                 }
                 db.execSQL(sql.toString());
+                onCreate(db);
             }
         }catch(Exception error){
             Log.d("error", error.getMessage());

@@ -17,9 +17,11 @@ import Entity.User;
 public class UserRepository implements IBD<User> {
 
     private Connection connection;
+    private static final int VERSION_BDD =1;
+    private static final String NAME_BDD = "ExamenICT.db";
 
     public UserRepository(Context context) {
-        connection = new Connection(context);
+        connection = new Connection(context,NAME_BDD, null,VERSION_BDD);
     }
 
     @Override
@@ -59,30 +61,23 @@ public class UserRepository implements IBD<User> {
 
     @Override
     public ArrayList<User> GetBy(User user) {
-        ArrayList<User> lisPlace = new ArrayList<User>();
-        try{
-            SQLiteDatabase db = connection.getWritableDatabase();
-            if(db != null) {
-                String[] args = new String[]{String.valueOf(user.getEmail())};
-                Cursor cursor = db.query("users", new String[]{"user","password"},"user=?",args,null,null,"user desc",null);
-                if (cursor.moveToFirst()){
-                    do{
-                        String password = cursor.getString(1);
-                        String users = cursor.getString(0);
-
-                        User userTemp = new User();
-                        userTemp.setEmail(users);
-                        userTemp.setPassword(password);
-
-                    }while (cursor.moveToNext());
-                }
-                connection.close();
-                return lisPlace;
-            }
-
-        }catch (Exception error){
-            Log.d("error", error.getMessage());
-        }
-        return lisPlace;
+        return null;
     }
+
+    public String getPass(String userName)
+    {
+        SQLiteDatabase db = connection.getWritableDatabase();
+        Cursor cursor=db.query("users", null, " user=?", new String[]{userName}, null, null, null);
+        if(cursor.getCount()<1) // UserName Not Exist
+        {
+            cursor.close();
+            return "NOT EXIST";
+        }
+        cursor.moveToFirst();
+        String password= cursor.getString(cursor.getColumnIndex("password"));
+        cursor.close();
+        db.close();
+        return password;
+    }
+
 }

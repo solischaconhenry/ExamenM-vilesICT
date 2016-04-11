@@ -103,7 +103,7 @@ public class AnimalRegister extends Fragment{
                     txtname.setText("");
                     txtpopulation.setText("");
                     txtweight.setText("");
-                    Toast.makeText(getContext(),"Registrado",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext().getApplicationContext(),"Registrado",Toast.LENGTH_SHORT).show();
                 }
             }
         });

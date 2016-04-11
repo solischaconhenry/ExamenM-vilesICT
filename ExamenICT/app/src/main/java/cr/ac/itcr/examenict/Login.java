@@ -8,10 +8,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import DB.IBD;
+import DB.UserRepository;
 
 public class Login extends AppCompatActivity {
 
     Button btnLogin;
+    TextView txtuser;
+    TextView txtpass;
+    String Pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,12 +28,32 @@ public class Login extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        txtuser = (TextView)findViewById(R.id.txtEmail);
+        txtpass = (TextView)findViewById(R.id.txtPassword);
+
         btnLogin = (Button)findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(i);
+                if(txtuser.getText().toString().equals("") || txtpass.getText().toString().equals("")){
+                    Toast.makeText(getApplicationContext(),"Complete the Spaces",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    UserRepository repository = new UserRepository(getApplicationContext());
+                    Pass = repository.getPass(txtuser.getText().toString());
+                    if(txtpass.getText().toString().equals(Pass)){
+                        txtpass.setText("");
+                        txtuser.setText("");
+                        Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                        startActivity(i);
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(),"User or Passwword incorrect!",Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
             }
         });
 

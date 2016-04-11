@@ -16,9 +16,11 @@ import Entity.Animal;
 public class AnimalRepository implements IBD<Animal> {
 
     private Connection connection;
+    private static final int VERSION_BDD =1;
+    private static final String NAME_BDD = "ExamenICT.db";
 
     public AnimalRepository(Context context) {
-        connection = new Connection(context);
+        connection = new Connection(context,NAME_BDD, null,VERSION_BDD);
     }
 
     @Override
@@ -96,19 +98,20 @@ public class AnimalRepository implements IBD<Animal> {
         try{
             SQLiteDatabase db = connection.getWritableDatabase();
             if(db != null) {
-                Cursor cursor = db.query("animal", new String[]{"population","name","category","weight"},null,null,null,null,"name desc",null);
+                Cursor cursor = db.query("animal", new String[]{"population","name","category","weight"},null,null,null,null,null,null);
                 if (cursor.moveToFirst()){
                     do{
-                        int population = cursor.getInt(0);
-                        String nombre = cursor.getString(1);
-                        String category = cursor.getString(2);
-                        int weight = cursor.getInt(3);
+                        int population = cursor.getInt(cursor.getColumnIndex("population"));
+                        String nombre = cursor.getString(cursor.getColumnIndex("name"));
+                        String category = cursor.getString(cursor.getColumnIndex("category"));
+                        int weight = cursor.getInt(cursor.getColumnIndex("weight"));
 
                         Animal animal = new Animal();
                         animal.setCategory(category);
                         animal.setPopulation(population);
                         animal.setWeight(weight);
                         animal.setName(nombre);
+                        lisPlace.add(animal);
                     }while (cursor.moveToNext());
                 }
                 connection.close();

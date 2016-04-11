@@ -1,10 +1,14 @@
 package cr.ac.itcr.examenict;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -34,6 +38,8 @@ public class AnimalGallery extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     TextView txtAnimal;
     ListView lv1;
+    ArrayList<Animal> data;
+    ArrayAdapter<String> adapter;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -73,6 +79,16 @@ public class AnimalGallery extends Fragment {
     }
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        if (v.getId()==R.id.lv1Gallery) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+            menu.setHeaderTitle(data.get(info.position).getName());
+            MenuInflater inflater = getActivity().getMenuInflater();
+            inflater.inflate(R.menu.menucontextual,menu);
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_animal_gallery, container, false);
@@ -81,19 +97,58 @@ public class AnimalGallery extends Fragment {
 
         IBD repository = new AnimalRepository(getContext().getApplicationContext());
 
-        ArrayList<String> test = repository.GetAll();
+        //add contextual menu
+
+
+        data = repository.GetAll();
+        ArrayList<String> test = new ArrayList<String>();
+        for (int x = 0; x < data.size(); x++){
+            test.add(data.get(x).getName());
+        }
 
         lv1 = (ListView)view.findViewById(R.id.lv1Gallery);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, test);
+        registerForContextMenu(lv1);
+        adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, test);
+        adapter.notifyDataSetChanged();
         lv1.setAdapter(adapter);
         lv1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                txtAnimal.setText(lv1.getItemAtPosition(position).toString());
+                txtAnimal.setText(lv1.getItemAtPosition(position).toString()+" Categ: "+ data.get(position).getCategory()+" Popul: " +data.get(position).getPopulation() +" Weight: " +data.get(position).getWeight());
             }
         });
         // Inflate the layout for this fragment
         return view;
+    }
+
+
+    //actions for context Menu
+
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        IBD repository = new AnimalRepository(getContext().getApplicationContext());
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        data = repository.GetAll();
+
+        switch (item.getItemId()){
+            case R.id.delete:
+                repository.Delete(data.get(info.position));
+                adapter.notifyDataSetChanged();
+                break;
+            case R.id.update:
+                Intent i = new Intent(getContext().getApplicationContext(),UpdateAnimal.class);
+                Bundle bolsa = new Bundle();
+                bolsa.putString("name",data.get(info.position).getName());
+                bolsa.putString("category",data.get(info.position).getCategory());
+                bolsa.putInt("weight", data.get(info.position).getWeight());
+                bolsa.putInt("population", data.get(info.position).getPopulation());
+                i.putExtras(bolsa);
+                startActivity(i);
+                break;
+        }
+
+        return super.onContextItemSelected(item);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
