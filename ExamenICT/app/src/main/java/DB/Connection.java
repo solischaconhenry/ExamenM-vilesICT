@@ -10,30 +10,45 @@ import android.util.Log;
  */
 public class Connection extends SQLiteOpenHelper {
 
+    /**
+     * Método constructor para la BD
+     * @param context Contexto actual de la aplicación
+     * @param name Nombre de la BD
+     * @param factory
+     * @param version Versión Actual de la BD
+     */
     public Connection(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 
+    /**
+     * Método para crear las tablas y algunas inserciones en la BD, este métodos se llama cuando no existe la BD
+     * @param db
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        try{
+        try {
             final String sqlCreatePlace;
             final String sqlCreateAnimal;
             final String sqlInsertUsers;
             final String sqlInsertAnimal;
 
-            //create
+            //crea la tabla usuarios
             sqlCreatePlace = "CREATE TABLE " + "users " +
                     "(" + "_id INTEGER PRIMARY KEY AUTOINCREMENT, password TEXT," + " user TEXT);";
 
+            //crea la tabla animales
             sqlCreateAnimal = "CREATE TABLE " + "animal " +
                     "(" + " id" + " INTEGER PRIMARY KEY AUTOINCREMENT," + " name TEXT," + " category TEXT," + " weight INTEGER,"
-                        +" population INTEGER);";
+                    + " population INTEGER);";
 
+            //inserta un usuario base
             sqlInsertUsers = "INSERT INTO users (user, password) Values ('hsolicha', '12345');";
 
+            //inserta un animal base
             sqlInsertAnimal = "INSERT INTO animal (name, category, weight, population) Values ('Venado', 'Mamífero', 100, 50);";
 
+            //ejecución de los anteriores query
             db.execSQL(sqlCreatePlace);
             db.execSQL(sqlCreateAnimal);
             db.execSQL(sqlInsertUsers);
@@ -43,6 +58,12 @@ public class Connection extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Se ejecuta cuando se cambia la versión de la BD y busca actualizar la BD de la APP hasta el estado actual
+     * @param db
+     * @param oldVersion Versión vieja de la BD
+     * @param newVersion Versión nueva de la BD
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         try{

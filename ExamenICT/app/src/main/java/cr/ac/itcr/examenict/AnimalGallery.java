@@ -36,10 +36,11 @@ public class AnimalGallery extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    TextView txtAnimal;
-    ListView lv1;
-    ArrayList<Animal> data;
-    ArrayAdapter<String> adapter;
+    TextView txtAnimal; //Variable para mostrar la información del animal seleccionado
+    ListView lv1; //Lsita para publicar los animales registrados en la BD
+    ArrayList<Animal> data; //Contiene el objeto devuelto por la base de datos
+    ArrayAdapter<String> adapter; //Lista que contiene los elementos a mostrar en el Listview
+    ArrayList<String> test; //Lista que se le asigna al adapter para el Listview
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -78,6 +79,14 @@ public class AnimalGallery extends Fragment {
         }
     }
 
+    /**
+     * Este método carga las opciones del menú contextual asignado al listview, las opciones estan contenidas en
+     * menu > menucontextual.xml
+     * Además asigna como título del menú la opción seleccionada por el usuario
+     * @param menu información del menú en general
+     * @param v Contiene el manejo de vista
+     * @param menuInfo Información de la opción seleccionada por el usuario
+     */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         if (v.getId()==R.id.lv1Gallery) {
@@ -91,26 +100,46 @@ public class AnimalGallery extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        /**
+         *como es un fragment no se puede obtener los id directamente por ello debemos crear una variable que haga referencia
+         * al fragment que estamos modificando
+         */
         View view = inflater.inflate(R.layout.fragment_animal_gallery, container, false);
 
+        //busca el txt para mostrar infomación
         txtAnimal = (TextView)view.findViewById(R.id.txtShowAnimal);
 
+        /**
+         * Realiza conexión con el repositorio y el implements de la BD, para poder utilizar las funciones relacionadas
+         */
         IBD repository = new AnimalRepository(getContext().getApplicationContext());
 
-        //add contextual menu
-
+        /**
+         * solicita todos los animales que hayan en la base de datos por medio de la función GetAll(), pero recibe un objeto de tipo Animal
+         * Pero como el listview utiliza un tipo string y solo el nombre, por ello extraemos todos lo nombre de la lista "data" y lo colocamos
+         * en otra y se la asignamos al adapter  para que sea mostrada.
+         */
 
         data = repository.GetAll();
-        ArrayList<String> test = new ArrayList<String>();
+        test = new ArrayList<String>();
         for (int x = 0; x < data.size(); x++){
             test.add(data.get(x).getName());
         }
 
         lv1 = (ListView)view.findViewById(R.id.lv1Gallery);
+
+        //asignación del menu contextual al ListView
         registerForContextMenu(lv1);
         adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, test);
+
+        //indica al adapter un cambio en el contenido del arreglo
         adapter.notifyDataSetChanged();
+
+        //inicializa el arreglo adapter para el listview
         lv1.setAdapter(adapter);
+
+        //cuandos se selecciona una opción se i
         lv1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -121,10 +150,30 @@ public class AnimalGallery extends Fragment {
         return view;
     }
 
+    /**
+     * cuando se edita un elemento y se regresa a este activity, por ende necesitaba refrescar el arreglo test para refrescar el
+     * listview, además el activity quedaba en resume, entonces aprovecho el metodo de regreso para refrescar
+     */
+    @Override
+    public void onResume() {
+        IBD repository = new AnimalRepository(getContext().getApplicationContext());
+        data = repository.GetAll();
+        test = new ArrayList<String>();
+        for (int x = 0; x < data.size(); x++){
+            test.add(data.get(x).getName());
+        }
+        adapter.notifyDataSetChanged();
 
+        super.onResume();
+    }
     //actions for context Menu
 
-
+    /**
+     * Método para indicar que acciones realizar dependiendo de la opción seleccionada por el usuario
+     * Si selecciona Delete, eliminar el registro
+     * @param item
+     * @return
+     */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         IBD repository = new AnimalRepository(getContext().getApplicationContext());
@@ -134,10 +183,13 @@ public class AnimalGallery extends Fragment {
         switch (item.getItemId()){
             case R.id.delete:
                 repository.Delete(data.get(info.position));
+                test.remove(info.position);
                 adapter.notifyDataSetChanged();
                 break;
             case R.id.update:
+                //invocar la vista para editar datos de un elemento, y enviar los datos a editat por medio de results
                 Intent i = new Intent(getContext().getApplicationContext(),UpdateAnimal.class);
+
                 Bundle bolsa = new Bundle();
                 bolsa.putString("name",data.get(info.position).getName());
                 bolsa.putString("category",data.get(info.position).getCategory());

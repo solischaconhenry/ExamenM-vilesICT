@@ -50,5 +50,13 @@
             android:id="@+id/textView7"
             android:layout_marginTop="10dp"
             android:layout_gravity="center_horizontal" />
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:id="@+id/imageView2"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/logotec" />
     </LinearLayout>
 </FrameLayout>

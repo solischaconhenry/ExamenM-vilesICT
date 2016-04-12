@@ -70,27 +70,39 @@ public class UserRegister extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        /**
+         *como es un fragment no se puede obtener los id directamente por ello debemos crear una variable que haga referencia
+         * al fragment que estamos modificando
+         */
         final View view = inflater.inflate(R.layout.fragment_user_register, container, false);
+        //Inicialización de boton
         final Button addU = (Button)view.findViewById(R.id.btnAddUser);
 
+        //acciones a realizar en el momento de activar el boton
         addU.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //Inicialización de la variables contenedoras de los datos a registrar
                 TextView txtuser = (TextView)view.findViewById(R.id.txtEmailUser);
                 TextView txtpassword = (TextView)view.findViewById(R.id.txtPasswordUser);
 
+                //comprueba que los campos no esten vaciós
                 if(txtuser.getText().toString().equals("") || txtpassword.getText().toString().equals("")){
                     Toast.makeText(getContext().getApplicationContext(), "Complete the Spaces", Toast.LENGTH_LONG).show();
                 }
                 else {
+                    //Instancia  el Repositorio de Usuario que contiene los métodos para BD
                     IBD repository = new UserRepository(getContext().getApplicationContext());
 
+                    //instancia user para crear un objeto con los datos que se van a enviar a almacenar a la BD
                     User users = new User();
 
+                    //captura los datos a almcenar
                     users.setEmail(txtuser.getText().toString());
                     users.setPassword(txtpassword.getText().toString());
 
+                    //envia a almacenar
                     repository.Save(users);
                     //limpiar campos
                     txtuser.setText("");

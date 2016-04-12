@@ -73,30 +73,42 @@ public class AnimalRegister extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        /**
+         *como es un fragment no se puede obtener los id directamente por ello debemos crear una variable que haga referencia
+         * al fragment que estamos modificando
+         */
         final View view = inflater.inflate(R.layout.fragment_animal_register, container, false);
+        //Inicialización de boton
         final Button addA = (Button)view.findViewById(R.id.btnAddAnimal);
 
+        //acciones a realizar en el momento de activar el boton
         addA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Inicialización de la variables contenedoras de los datos a registrar
                 TextView txtname = (TextView)view.findViewById(R.id.txtAnimalName);
                 TextView txtweight = (TextView)view.findViewById(R.id.txtAnimalWeight);
                 TextView txtcategory = (TextView)view.findViewById(R.id.txtCategory);
                 TextView txtpopulation = (TextView)view.findViewById(R.id.txtpopulation);
-                if(txtname.getText().toString().equals("")){
+
+                //comprueba que los campos no esten vaciós
+                if(txtname.getText().toString().equals("") || txtweight.getText().toString().equals("") || txtcategory.getText().toString().equals("") || txtpopulation.getText().toString().equals("")){
                     Toast.makeText(getContext().getApplicationContext(), "Complete the Spaces", Toast.LENGTH_LONG).show();
                 }
                 else {
+                    //Instancia  el Repositorio de Animale que contiene los métodos para BD
                     IBD repository = new AnimalRepository(getContext().getApplicationContext());
 
+                    //instancia animal para crear un objeto con los datos que se van a enviar a almacenar a la BD
                     Animal animal = new Animal();
 
+                    //captura los datos a almcenar
                     animal.setName(txtname.getText().toString());
                     animal.setCategory(txtcategory.getText().toString());
                     animal.setPopulation(Integer.parseInt(txtpopulation.getText().toString()));
                     animal.setWeight(Integer.parseInt(txtweight.getText().toString()));
 
+                    //envia a almacenar
                     repository.Save(animal);
                     //limpiar campos
                     txtcategory.setText("");

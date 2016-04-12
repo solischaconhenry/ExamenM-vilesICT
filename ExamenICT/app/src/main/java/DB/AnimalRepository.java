@@ -14,15 +14,24 @@ import Entity.Animal;
  * Created by usuario on 9/4/2016.
  */
 public class AnimalRepository implements IBD<Animal> {
-
+    //inicialización de variables para la bd y instacia de la misma
     private Connection connection;
     private static final int VERSION_BDD =1;
     private static final String NAME_BDD = "ExamenICT.db";
 
+    /**
+     * Constructor para la BD, donde se idica nombre, versión y contexto de ejecución
+     * @param context contexto actual de la aplicación
+     */
     public AnimalRepository(Context context) {
         connection = new Connection(context,NAME_BDD, null,VERSION_BDD);
     }
 
+    /**
+     * Método para almacernar datos en la BD y la tabla animal en específico
+     * @param animal Recibe un arreglo de tipo objeto animal que contiene información para almacenar ne la BD
+     * @return retorna error en caso de fallar
+     */
     @Override
     public boolean Save(Animal animal) {
         try{
@@ -45,6 +54,11 @@ public class AnimalRepository implements IBD<Animal> {
         return true;
     }
 
+    /**
+     * Método para editar datos en la BD y la tabla animal en específico
+     * @param animal Recibe un arreglo de tipo objeto animal que contiene información para editar ne la BD
+     * @return retorna error en caso de fallar
+     */
     @Override
     public boolean Update(Animal animal) {
         try{
@@ -72,6 +86,11 @@ public class AnimalRepository implements IBD<Animal> {
         return true;
     }
 
+    /**
+     * Método para eliminar datos en la BD y la tabla animal en específico
+     * @param animal Recibe un arreglo de tipo objeto animal que contiene información para eliminar ne la BD
+     * @return retorna error en caso de fallar
+     */
     @Override
     public boolean Delete(Animal animal) {
         try{
@@ -92,6 +111,10 @@ public class AnimalRepository implements IBD<Animal> {
         return true;
     }
 
+    /**
+     * Método para obtener todos los datos de la BD y la tabla animal en específico
+     * @return retorna un arreglo de tipo animal con todos los datos
+     */
     @Override
     public ArrayList<Animal> GetAll() {
         ArrayList<Animal> lisPlace = new ArrayList<Animal>();
@@ -124,6 +147,11 @@ public class AnimalRepository implements IBD<Animal> {
         return lisPlace;
     }
 
+    /**
+     * Método para obtener datos de la BD y la tabla animal en específico
+     * @param animal Recibe un parametro de tipo objeto animal que contiene información para buscar en la BD
+     * @return retorna la información solicitada en forma de arreglo tipo animal
+     */
     @Override
     public ArrayList<Animal> GetBy(Animal animal) {
         ArrayList<Animal> lisPlace = new ArrayList<Animal>();

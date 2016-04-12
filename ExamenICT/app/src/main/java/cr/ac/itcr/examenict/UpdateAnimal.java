@@ -19,11 +19,11 @@ import Entity.Animal;
 
 public class UpdateAnimal extends AppCompatActivity {
 
-    TextView txtname;
-    TextView txtpopulation;
-    TextView txtweight;
-    TextView txtcategory;
-    Button btnUpdList;
+    TextView txtname; //variable para obtener el nombre actualizado
+    TextView txtpopulation; // variable para obtener la población actualizada
+    TextView txtweight;// variable para obtener el peso actualizado
+    TextView txtcategory;// variable para obtener la categoria actualizada
+    Button btnUpdList; // variable para obtener la acción del boton
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,21 +32,22 @@ public class UpdateAnimal extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //inicializar los componentes para su uso
         txtname = (TextView)findViewById(R.id.txtAnimalNameU);
         txtpopulation = (TextView)findViewById(R.id.txtpopulationU);
         txtcategory = (TextView)findViewById(R.id.txtCategoryU);
         txtweight = (TextView)findViewById(R.id.txtAnimalWeightU);
         btnUpdList = (Button)findViewById(R.id.btnUpdAnimal);
 
-        IBD repository = new AnimalRepository(getApplicationContext());
 
-        //catch parameters
+        //atrapa los datos enviados por el activity anterior (lsitview)
         Bundle bolsaR = getIntent().getExtras();
         txtname.setText(bolsaR.getString("name"));
         txtcategory.setText(bolsaR.getString("category"));
         txtpopulation.setText(String.valueOf(bolsaR.getInt("population")));
         txtweight.setText(String.valueOf(bolsaR.getInt("weight")));
 
+        //acciones del botón
         btnUpdList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,19 +58,20 @@ public class UpdateAnimal extends AppCompatActivity {
                     IBD repository = new AnimalRepository(getApplicationContext());
 
                     Animal animal = new Animal();
-
+                    //modificar los datos según lo digitado por el usuario
                     animal.setName(txtname.getText().toString());
                     animal.setCategory(txtcategory.getText().toString());
                     animal.setPopulation(Integer.parseInt(txtpopulation.getText().toString()));
                     animal.setWeight(Integer.parseInt(txtweight.getText().toString()));
 
+                    //enviar los datos a la BD para modificarlo
                     repository.Update(animal);
                     //limpiar campos
                     txtcategory.setText("");
                     txtname.setText("");
                     txtpopulation.setText("");
                     txtweight.setText("");
-                    Toast.makeText(getApplicationContext(),"Registrado",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Editado",Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }

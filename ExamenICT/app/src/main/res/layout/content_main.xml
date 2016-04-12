@@ -11,7 +11,8 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="cr.ac.itcr.examenict.MainActivity"
     tools:showIn="@layout/app_bar_main"
-    android:id="@+id/content_dashboard">
+    android:id="@+id/content_dashboard"
+    android:background="@drawable/fondo">
 
 
 </RelativeLayout>
